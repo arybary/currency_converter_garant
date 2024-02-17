@@ -10,12 +10,12 @@ export const fromAmount = writable<number>(1);
 export const toAmount = writable<number>(1);
 export const rateCurrencyConverter = writable<number>(1);
 
-export function setCurrencies(apiCurrencies: Currency[]) {
+export const setCurrencies = (apiCurrencies: Currency[]) => {
 	const currenciesPlusUAH = [currencyUAH, ...apiCurrencies];
 	currencies.set(currenciesPlusUAH);
-}
+};
 
-export function setCurrenciesForConverter(apiCurrencies: Currency[]) {
+export const setCurrenciesForConverter = (apiCurrencies: Currency[]) => {
 	const hashMap = apiCurrencies.reduce(
 		(acc, curr) => {
 			acc[curr.cc] = curr;
@@ -25,7 +25,7 @@ export function setCurrenciesForConverter(apiCurrencies: Currency[]) {
 	);
 
 	currenciesForConverter.set(hashMap);
-}
+};
 
 export const getRateCurrency = (
 	currencies: Record<string, Currency>,
@@ -35,5 +35,5 @@ export const getRateCurrency = (
 	const fromRate = currencies[fromCurrency]?.rate || 1;
 	const toRate = currencies[toCurrency]?.rate || 1;
 	const newRateForConvert = fromRate / toRate;
-	return rateCurrencyConverter.set(newRateForConvert);
+	rateCurrencyConverter.update(() => newRateForConvert);
 };
