@@ -9,6 +9,6 @@ export async function load({ fetch }: any): Promise<Currencies> {
 	}
 	const data = (await res.json()) as Currency[];
 	return {
-		currencies: data
+		currenciesData: data
 	};
 }

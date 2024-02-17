@@ -6,4 +6,4 @@ export interface Currency {
 	exchangedate: string;
 }
 
-export type Currencies = { currencies: Currency[] };
+export type Currencies = { currenciesData: Currency[] };

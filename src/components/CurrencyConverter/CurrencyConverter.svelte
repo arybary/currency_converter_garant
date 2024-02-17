@@ -1,69 +1,63 @@
 <script lang="ts">
-	import type { Currency } from '../../type/Currency';
-	
-	export let currencies: Currency[];
+	import CurrencySelector from './CurrencySelector/CurrencySelector.svelte';
+	import AmountInput from './AmountInput/AmountInput.svelte';
+	import {
+		currencies,
+		fromCurrency,
+		toCurrency,
+		fromAmount,
+		toAmount
+	} from '../../store/currencyConverterStore';
+	import { convertCurrency } from '../../utils/currencyConverter';
 
-	console.log(currencies);
+	let updatingFrom = false;
+	let updatingTo = false;
 
-	const convertCurrency = (fromCurrency: string, toCurrency: string, amount: number): number => {
-		if (fromCurrency && toCurrency && fromAmount) {
-			const fromRate: number =
-				currencies.find((currency) => currency.cc === fromCurrency)?.rate || 1;
-			const toRate: number = currencies.find((currency) => currency.cc === toCurrency)?.rate || 1;
+	// React to changes in fromAmount or fromCurrency to update toAmount
+	$: if ($fromCurrency && $toCurrency && $fromAmount && !updatingTo) {
+		updatingFrom = true;
+		const convertedAmount = convertCurrency($currencies, $fromCurrency, $toCurrency, $fromAmount);
+		toAmount.set(convertedAmount);
+		updatingFrom = false;
+	}
 
-			return parseFloat(((amount * fromRate) / toRate).toFixed(2));
-		}
-		return 1;
-	};
+	// React to changes in toAmount or toCurrency to update fromAmount
+	$: if ($fromCurrency && $toCurrency && $toAmount && !updatingFrom) {
+		updatingTo = true;
+		const convertedAmount = convertCurrency($currencies, $toCurrency, $fromCurrency, $toAmount);
+		fromAmount.set(convertedAmount);
+		updatingTo = false;
+	}
+	function handleFromCurrencyChange(event: Event) {
+		fromCurrency.set((event.target as HTMLSelectElement).value);
+	}
 
-	let fromCurrency = 'USD';
-	let toCurrency = 'UAH';
-	let fromAmount: number = 1;
-	let toAmount: number = convertCurrency(fromCurrency, toCurrency, fromAmount);
+	function handleToCurrencyChange(event: Event) {
+		toCurrency.set((event.target as HTMLSelectElement).value);
+	}
 
-	const handleFromAmountChange = (event: Event) => {
-		fromAmount = parseFloat((event.target as HTMLInputElement).value);
-		toAmount = convertCurrency(fromCurrency, toCurrency, fromAmount);
-	};
+	function handleFromAmountChange(event: Event) {
+		fromAmount.set(parseFloat((event.target as HTMLInputElement).value));
+	}
 
-	const handleToAmountChange = (event: Event) => {
-		toAmount = parseFloat((event.target as HTMLInputElement).value);
-		fromAmount = convertCurrency(toCurrency, fromCurrency, toAmount);
-	};
-
-	const handleFromCurrencyChange = (event: Event) => {
-		fromCurrency = (event.target as HTMLSelectElement).value;
-		fromAmount = convertCurrency(toCurrency, fromCurrency, toAmount as number);
-	};
-
-	const handleToCurrencyChange = (event: Event) => {
-		toCurrency = (event.target as HTMLSelectElement).value;
-		toAmount = convertCurrency(fromCurrency, toCurrency, fromAmount as number);
-	};
+	function handleToAmountChange(event: Event) {
+		toAmount.set(parseFloat((event.target as HTMLInputElement).value));
+	}
 </script>
 
 <div>
-	<div>
-		<select bind:value={fromCurrency} on:change={handleFromCurrencyChange}>
-			{#each currencies as currency}
-				<option value={currency.cc}>{currency.cc}</option>
-			{/each}
-		</select>
-		<input type="number" min="1" bind:value={fromAmount} on:input={handleFromAmountChange} />
-	</div>
-	<div>
-		<select bind:value={toCurrency} on:change={handleToCurrencyChange}>
-			{#each currencies as currency}
-				<option value={currency.cc}>{currency.cc}</option>
-			{/each}
-		</select>
-		<input type="number" min="1" bind:value={toAmount} on:input={handleToAmountChange} />
-	</div>
+	<CurrencySelector
+		bind:selectedCurrency={$fromCurrency}
+		onCurrencyChange={handleFromCurrencyChange}
+		{currencies}
+	/>
+	<AmountInput bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
 </div>
-
-<style>
-	select,
-	input {
-		margin: 5px;
-	}
-</style>
+<div>
+	<CurrencySelector
+		bind:selectedCurrency={$toCurrency}
+		onCurrencyChange={handleToCurrencyChange}
+		{currencies}
+	/>
+	<AmountInput bind:amount={$toAmount} onAmountChange={handleToAmountChange} />
+</div>
