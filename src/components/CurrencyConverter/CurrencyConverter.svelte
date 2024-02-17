@@ -46,7 +46,7 @@
 
 <div>
 	<div>
-		<input type="number" bind:value={fromAmount} on:input={handleFromAmountChange} />
+		<input type="number" min="1" bind:value={fromAmount} on:input={handleFromAmountChange} />
 		<select bind:value={fromCurrency} on:change={handleFromCurrencyChange}>
 			{#each currencies as currency}
 				<option value={currency.cc}>{currency.cc}</option>
@@ -54,7 +54,7 @@
 		</select>
 	</div>
 	<div>
-		<input type="number" bind:value={toAmount} on:input={handleToAmountChange} />
+		<input type="number" min="1" bind:value={toAmount} on:input={handleToAmountChange} />
 		<select bind:value={toCurrency} on:change={handleToCurrencyChange}>
 			{#each currencies as currency}
 				<option value={currency.cc}>{currency.cc}</option>
