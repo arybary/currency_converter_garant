@@ -1,7 +1,7 @@
 import { baseUrl } from '../constants/currenciesConst';
-import type { Currencies, Currency } from '../type/Currency';
+import type { CurrenciesData, Currency } from '../type/Currency';
 
-export async function load({ fetch }: any): Promise<Currencies> {
+export async function load({ fetch }: any): Promise<CurrenciesData> {
 	const res = await fetch(baseUrl);
 
 	if (!res.ok) {

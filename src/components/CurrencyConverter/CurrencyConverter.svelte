@@ -3,45 +3,58 @@
 	import AmountInput from './AmountInput/AmountInput.svelte';
 	import {
 		currencies,
+		currenciesForConverter,
 		fromCurrency,
 		toCurrency,
 		fromAmount,
-		toAmount
+		toAmount,
+		setCurrenciesForConverter
 	} from '../../store/currencyConverterStore';
 	import { convertCurrency } from '../../utils/currencyConverter';
+	import { onMount } from 'svelte';
 
-	let updatingFrom = false;
-	let updatingTo = false;
-
-	// React to changes in fromAmount or fromCurrency to update toAmount
-	$: if ($fromCurrency && $toCurrency && $fromAmount && !updatingTo) {
-		updatingFrom = true;
-		const convertedAmount = convertCurrency($currencies, $fromCurrency, $toCurrency, $fromAmount);
+	onMount(() => {
+		setCurrenciesForConverter($currencies);
+		convertFromTo();
+	});
+	function convertFromTo() {
+		const convertedAmount = convertCurrency(
+			$currenciesForConverter,
+			$fromCurrency,
+			$toCurrency,
+			$fromAmount
+		);
 		toAmount.set(convertedAmount);
-		updatingFrom = false;
 	}
 
-	// React to changes in toAmount or toCurrency to update fromAmount
-	$: if ($fromCurrency && $toCurrency && $toAmount && !updatingFrom) {
-		updatingTo = true;
-		const convertedAmount = convertCurrency($currencies, $toCurrency, $fromCurrency, $toAmount);
+	function convertToFrom() {
+		const convertedAmount = convertCurrency(
+			$currenciesForConverter,
+			$toCurrency,
+			$fromCurrency,
+			$toAmount
+		);
 		fromAmount.set(convertedAmount);
-		updatingTo = false;
 	}
+
 	function handleFromCurrencyChange(event: Event) {
 		fromCurrency.set((event.target as HTMLSelectElement).value);
+		convertToFrom();
 	}
 
 	function handleToCurrencyChange(event: Event) {
 		toCurrency.set((event.target as HTMLSelectElement).value);
+		convertFromTo();
 	}
 
 	function handleFromAmountChange(event: Event) {
 		fromAmount.set(parseFloat((event.target as HTMLInputElement).value));
+		convertFromTo();
 	}
 
 	function handleToAmountChange(event: Event) {
 		toAmount.set(parseFloat((event.target as HTMLInputElement).value));
+		convertToFrom();
 	}
 </script>
 

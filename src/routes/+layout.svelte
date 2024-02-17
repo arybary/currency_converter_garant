@@ -9,6 +9,6 @@
 		<slot />
 	</main>
 	<footer class="app__footer">
-		<p>create by Medvid Rostislav</p>
+		<p>created by Medvid Rostislav</p>
 	</footer>
 </div>

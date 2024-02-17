@@ -1,12 +1,11 @@
 <script>
 	import CurrencyConverter from '../components/CurrencyConverter/CurrencyConverter.svelte';
-	import { currencyUAH } from '../constants/currenciesConst';
-	import { currencies } from '../store/currencyConverterStore';
+	import { currencies, setCurrencies } from '../store/currencyConverterStore';
 
 	export let data;
+
 	const { currenciesData } = data;
-	const currenciesPlusUAH = [currencyUAH, ...currenciesData];
-	currencies.set(currenciesPlusUAH);
+	setCurrencies(currenciesData);
 </script>
 
 <svelte:head>
