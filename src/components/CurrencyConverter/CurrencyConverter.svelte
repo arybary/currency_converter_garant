@@ -15,7 +15,7 @@
 	import { onMount } from 'svelte';
 
 	const convertCurrency = (amount: number, rate: number) => parseFloat((amount * rate).toFixed(2));
-    
+
 	onMount(() => {
 		setCurrenciesForConverter($currencies);
 		getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency);
@@ -23,30 +23,30 @@
 	});
 
 	$: getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency);
-	function convertFromTo() {
+	const convertFromTo = () => {
 		const convertedAmount = convertCurrency($rateCurrencyConverter, $fromAmount);
 		toAmount.set(convertedAmount);
-	}
-	function convertToFrom() {
+	};
+	const convertToFrom = () => {
 		const convertedAmount = convertCurrency(1 / $rateCurrencyConverter, $toAmount);
 		fromAmount.set(convertedAmount);
-	}
-	function handleFromCurrencyChange(event: Event) {
+	};
+	const handleFromCurrencyChange = (event: Event) => {
 		fromCurrency.set((event.target as HTMLSelectElement).value);
 		convertToFrom();
-	}
-	function handleToCurrencyChange(event: Event) {
+	};
+	const handleToCurrencyChange = (event: Event) => {
 		toCurrency.set((event.target as HTMLSelectElement).value);
 		convertFromTo();
-	}
-	function handleFromAmountChange(event: Event) {
+	};
+	const handleFromAmountChange = (event: Event) => {
 		fromAmount.set(parseFloat((event.target as HTMLInputElement).value));
 		convertFromTo();
-	}
-	function handleToAmountChange(event: Event) {
+	};
+	const handleToAmountChange = (event: Event) => {
 		toAmount.set(parseFloat((event.target as HTMLInputElement).value));
 		convertToFrom();
-	}
+	};
 </script>
 
 <div>
