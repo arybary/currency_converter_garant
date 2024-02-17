@@ -8,42 +8,36 @@
 		toCurrency,
 		fromAmount,
 		toAmount,
+		rateCurrencyConverter,
 		setCurrenciesForConverter
 	} from '../../store/currencyConverterStore';
-	import { convertCurrency } from '../../utils/currencyConverter';
+	import { convertCurrency, getRateCurrency } from '../../utils/currencyConverter';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
 		setCurrenciesForConverter($currencies);
+		rateCurrencyConverter.set(getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency));
 		convertFromTo();
 	});
 	function convertFromTo() {
-		const convertedAmount = convertCurrency(
-			$currenciesForConverter,
-			$fromCurrency,
-			$toCurrency,
-			$fromAmount
-		);
+		const convertedAmount = convertCurrency($rateCurrencyConverter, $fromAmount);
 		toAmount.set(convertedAmount);
 	}
 
 	function convertToFrom() {
-		const convertedAmount = convertCurrency(
-			$currenciesForConverter,
-			$toCurrency,
-			$fromCurrency,
-			$toAmount
-		);
+		const convertedAmount = convertCurrency(1 / $rateCurrencyConverter, $toAmount);
 		fromAmount.set(convertedAmount);
 	}
 
 	function handleFromCurrencyChange(event: Event) {
 		fromCurrency.set((event.target as HTMLSelectElement).value);
+		rateCurrencyConverter.set(getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency));
 		convertToFrom();
 	}
 
 	function handleToCurrencyChange(event: Event) {
 		toCurrency.set((event.target as HTMLSelectElement).value);
+		rateCurrencyConverter.set(getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency));
 		convertFromTo();
 	}
 
@@ -66,6 +60,7 @@
 	/>
 	<AmountInput bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
 </div>
+<div>rate: {$rateCurrencyConverter.toFixed(2)}</div>
 <div>
 	<CurrencySelector
 		bind:selectedCurrency={$toCurrency}

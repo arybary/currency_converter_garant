@@ -7,6 +7,7 @@ export const fromCurrency = writable<string>('USD');
 export const toCurrency = writable<string>('UAH');
 export const fromAmount = writable<number>(1);
 export const toAmount = writable<number>(1);
+export const rateCurrencyConverter = writable<number>(1);
 
 export function setCurrencies(apiCurrencies: Currency[]) {
 	const currenciesPlusUAH = [currencyUAH, ...apiCurrencies];
