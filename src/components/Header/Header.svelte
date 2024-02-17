@@ -1,17 +1,23 @@
 <script>
 	import { page } from '$app/stores';
-	import './Header.scss';
+	import logo from '$lib/images/NBU_logo.svg';
+	import './_header.scss';
 </script>
 
 <header class="header">
-	<div class="header__nav">
-		<ul>
-			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">Home</a>
+	<nav class="header__nav">
+		<div class="logo">
+			<a href="https://bank.gov.ua/">
+				<img  class="logo__img" src={logo} alt="NBU" />
+			</a>
+		</div>
+		<ul class="nav__list">
+			<li class={$page.url.pathname === '/' ? 'nav__item nav__item_active' : 'nav__item'}>
+				<a class="nav__link" href="/">converter</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/contacts' ? 'page' : undefined}>
-				<a href="/contacts">About</a>
+			<li class={$page.url.pathname === '/contacts' ? 'nav__item nav__item_active' : 'nav__item'}>
+				<a class="nav__link" href="/contacts">contacts</a>
 			</li>
 		</ul>
-	</div>
+	</nav>
 </header>

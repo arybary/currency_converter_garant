@@ -6,4 +6,8 @@ $mobile-size: 480px;
 	}
 }
 
-
+@mixin hover {
+	@media (hover: hover) and (pointer: fine) {
+		@content;
+	}
+}
