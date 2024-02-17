@@ -1,4 +1,4 @@
-import { baseUrl } from '../constants/currency';
+import { baseUrl } from '../constants/currenciesConst';
 import type { Currencies, Currency } from '../type/Currency';
 
 export async function load({ fetch }: any): Promise<Currencies> {
