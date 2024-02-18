@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/NBU_logo.svg';
-	import './_header.scss';
+	import './Header.scss';
 </script>
 
 <header class="header">
