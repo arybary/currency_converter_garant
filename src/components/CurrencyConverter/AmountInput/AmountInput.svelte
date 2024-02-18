@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let amount: number;
+  export let name: 'to' | 'from'
 	export let onAmountChange: (event: Event) => void;
 </script>
 
-<input class="input__amount" type="number" min="1" bind:value={amount} on:input={onAmountChange} />
+<input class="input__amount" type="number" min="1" bind:value={amount} on:input={onAmountChange} title={name} />
 
 <style lang="scss">
 	@use '/src/styles/variables' as *;

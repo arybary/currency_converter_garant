@@ -57,7 +57,7 @@
 			onCurrencyChange={handleFromCurrencyChange}
 			{currencies}
 		/>
-		<AmountInput bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
+		<AmountInput name={'from'} bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
 	</div>
 	<button class="converter__btn">{$rateCurrencyConverter.toFixed(2)}</button>
 	<div class="converter__input">
@@ -66,7 +66,7 @@
 			onCurrencyChange={handleToCurrencyChange}
 			{currencies}
 		/>
-		<AmountInput bind:amount={$toAmount} onAmountChange={handleToAmountChange} />
+		<AmountInput name={'to'} bind:amount={$toAmount} onAmountChange={handleToAmountChange} />
 	</div>
 </div>
 
@@ -90,9 +90,9 @@
 
 		&__input {
 			display: flex;
-			align-items:center;
+			align-items: center;
 			justify-content: center;
-			gap:1rem;
+			gap: 1rem;
 			padding: 2rem;
 
 			&_reverse {

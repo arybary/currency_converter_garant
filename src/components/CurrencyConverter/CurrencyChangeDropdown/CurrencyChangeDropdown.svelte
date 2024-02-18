@@ -3,6 +3,7 @@
 	import type { Currency } from '../../../type/Currency';
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import Flag from '../Flag/Flag.svelte';
 
 	export let currencies: Writable<Currency[]>;
 	export let selectedCurrency: string;
@@ -13,33 +14,50 @@
 	const toggleDropdown = () => {
 		isOpen = !isOpen;
 	};
+
+	const escFunction = (e: KeyboardEvent) => {
+		if (e.key === 'Escape') {
+			toggleDropdown;
+		}
+	};
+
+	const handleModalClick = (e: { target: any; currentTarget: any }) => {
+		if (e.target === e.currentTarget) {
+			isOpen = false;
+		}
+	};
 </script>
 
 <button class="currency__item" on:click={toggleDropdown}>
+	<Flag currency={selectedCurrency} />
 	{selectedCurrency}
 </button>
 
-{#if isOpen}
-	<div
-		class="dropdown"
-		transition:fly={{ y: 0, duration: 300 }}
-		on:click|stopPropagation={toggleDropdown}
-	>
-		<div class="dropdown__content">
-			{#each $currencies as { cc, txt }}
-				<div
-					class="currency__item"
-					on:click={() => {
-						onCurrencyChange(cc);
-						toggleDropdown();
-					}}
-				>
-					<div><span>{cc}</span></div>
-				</div>
-			{/each}
+	{#if isOpen}
+		<div
+			class="dropdown"
+			transition:fly={{ y: 0, duration: 300 }}
+			on:click|stopPropagation={handleModalClick}
+		>
+			<div class="dropdown__content">
+				{#each $currencies as { cc, txt }}
+					<div
+						class="currency__item"
+						on:click={() => {
+							onCurrencyChange(cc);
+							toggleDropdown();
+						}}
+					>
+						<div>
+							<Flag currency={cc} />
+							<span>{cc}</span>
+						</div>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-{/if}
+	{/if}
+
 
 <style lang="scss">
 	@use '/src/styles/variables' as *;

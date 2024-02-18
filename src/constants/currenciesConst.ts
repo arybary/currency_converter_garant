@@ -2,6 +2,8 @@ import type { Currency } from '../type/Currency';
 
 export const baseUrl = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
+export const flagUrl = 'http://purecatamphetamine.github.io/country-flag-icons/3x2';
+
 export const currencyUAH: Currency = {
 	r030: 980,
 	txt: 'Гривня',
