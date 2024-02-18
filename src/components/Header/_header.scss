@@ -2,8 +2,10 @@
 @use '/src/styles/mixins' as *;
 
 .header {
-	display: fixed;
 	background-color: $color-primary-green;
+    color: $color-neutral-colors-white;
+    padding: 20px;
+    text-align: center;
 
 	&__nav {
 		display: flex;
@@ -35,7 +37,7 @@
 			display: flex;
 			padding: 0.5rem;
 			align-items: center;
-			height: 3.56rem;
+			height: 3.5rem;
 
 			&_active {
 				background-color: $color-primary-light-green;

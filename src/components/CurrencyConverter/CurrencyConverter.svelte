@@ -1,5 +1,4 @@
 <script lang="ts">
-	import CurrencySelector from './CurrencySelector/CurrencySelector.svelte';
 	import AmountInput from './AmountInput/AmountInput.svelte';
 	import {
 		currencies,
@@ -13,6 +12,7 @@
 		getRateCurrency
 	} from '../../store/currencyConverterStore';
 	import { onMount } from 'svelte';
+	import CurrencyChangeDropdown from './CurrencyChangeDropdown/CurrencyChangeDropdown.svelte';
 
 	const convertCurrency = (amount: number, rate: number) => parseFloat((amount * rate).toFixed(2));
 
@@ -23,6 +23,7 @@
 	});
 
 	$: getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency);
+
 	const convertFromTo = () => {
 		const convertedAmount = convertCurrency($rateCurrencyConverter, $fromAmount);
 		toAmount.set(convertedAmount);
@@ -31,12 +32,12 @@
 		const convertedAmount = convertCurrency(1 / $rateCurrencyConverter, $toAmount);
 		fromAmount.set(convertedAmount);
 	};
-	const handleFromCurrencyChange = (event: Event) => {
-		fromCurrency.set((event.target as HTMLSelectElement).value);
+	const handleFromCurrencyChange = (currency: string) => {
+		fromCurrency.set(currency);
 		convertToFrom();
 	};
-	const handleToCurrencyChange = (event: Event) => {
-		toCurrency.set((event.target as HTMLSelectElement).value);
+	const handleToCurrencyChange = (currency: string) => {
+		toCurrency.set(currency);
 		convertFromTo();
 	};
 	const handleFromAmountChange = (event: Event) => {
@@ -51,7 +52,7 @@
 
 <div class="converter">
 	<div class="converter__input converter__input_reverse">
-		<CurrencySelector
+		<CurrencyChangeDropdown
 			bind:selectedCurrency={$fromCurrency}
 			onCurrencyChange={handleFromCurrencyChange}
 			{currencies}
@@ -60,7 +61,7 @@
 	</div>
 	<button class="converter__btn">{$rateCurrencyConverter.toFixed(2)}</button>
 	<div class="converter__input">
-		<CurrencySelector
+		<CurrencyChangeDropdown
 			bind:selectedCurrency={$toCurrency}
 			onCurrencyChange={handleToCurrencyChange}
 			{currencies}
@@ -89,7 +90,10 @@
 
 		&__input {
 			display: flex;
-			padding: 1rem;
+			align-items:center;
+			justify-content: center;
+			gap:1rem;
+			padding: 2rem;
 
 			&_reverse {
 				@include desktop {
@@ -102,25 +106,19 @@
 			flex-direction: row;
 		}
 		&__btn {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 5rem;
-			height: 5rem;
+			padding: 10px 20px;
+			background-color: $color-primary-dark-green;
 			color: $color-neutral-colors-white;
-			font-size: 1.5rem;
-			font-weight: 600;
-			border-radius: 100%;
-			background-color: $color-primary-green;
-			box-shadow: 13px 17px 16px 0px rgba(0, 0, 0, 0.75);
-			padding: 0.5rem;
 			border: none;
-			transition: all 0.4s ease;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
 			&:hover {
 				cursor:
 					url('$lib/images/arrow.svg') 15 15,
 					auto;
-				color: $color-primary-dark-green;
+				background-color: darken($color-primary-dark-green, 10%);
+
 				box-shadow: 13px 17px 42px 0px rgba(0, 0, 0, 0.75);
 			}
 		}
