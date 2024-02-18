@@ -4,9 +4,10 @@
 .btn {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	padding: 1rem;
-	gap: 1rem;
+	justify-content: space-around;
+    width: 6rem;
+    height: 4rem;
+
 	background-color: $color-primary-light-green;
 	color: $color-neutral-colors-black;
 	border-radius: 0.5rem;
