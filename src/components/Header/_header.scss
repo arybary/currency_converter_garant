@@ -1,11 +1,11 @@
-@use '/src/styles/variables' as *;
-@use '/src/styles/mixins' as *;
+@use "/src/styles/variables" as *;
+@use "/src/styles/mixins" as *;
 
 .header {
 	background-color: $color-primary-green;
-    color: $color-neutral-colors-white;
-    padding: 20px;
-    text-align: center;
+	color: $color-neutral-colors-white;
+	text-align: center;
+	padding-top:1rem;
 
 	&__nav {
 		display: flex;
@@ -41,7 +41,7 @@
 
 			&_active {
 				background-color: $color-primary-light-green;
-				font-weight:600;
+				font-weight: 600;
 				color: $color-primary-dark-green;
 				border-radius: 1rem;
 				border-bottom: 0.2rem solid $color-primary-dark-green;
