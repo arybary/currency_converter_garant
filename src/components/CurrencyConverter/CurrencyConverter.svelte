@@ -31,9 +31,16 @@
 		toAmount.set(convertedAmount);
 	};
 	const convertToFrom = () => {
-		const convertedAmount = convertCurrency(1 / $rateCurrencyConverter, $toAmount);
+		const newRate = 1 / $rateCurrencyConverter;
+		const convertedAmount = convertCurrency(newRate, $toAmount);
 		fromAmount.set(convertedAmount);
 	};
+
+	const convertReverse = () => {
+		const convertedAmount = convertCurrency(1 / $rateCurrencyConverter, $fromAmount);
+		toAmount.set(convertedAmount);
+	};
+
 	const handleFromCurrencyChange = (currency: string) => {
 		fromCurrency.set(currency);
 		convertToFrom();
@@ -50,6 +57,14 @@
 		toAmount.set(parseFloat((event.target as HTMLInputElement).value));
 		convertToFrom();
 	};
+
+	const handleReverseCurrency = () => {
+		const tempToCurrency = $toCurrency;
+		const tempFromCurrency = $fromCurrency;
+		toCurrency.set(tempFromCurrency);
+		fromCurrency.set(tempToCurrency);
+		convertReverse();
+	};
 </script>
 
 <div class="converter">
@@ -61,7 +76,7 @@
 		/>
 		<AmountInput name={'from'} bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
 	</div>
-	<CurrencyReverseBtn />
+	<CurrencyReverseBtn onReverseCurrency={handleReverseCurrency} />
 	<div class="converter__input">
 		<CurrencyChangeDropdown
 			bind:selectedCurrency={$toCurrency}

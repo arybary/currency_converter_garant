@@ -1,5 +1,5 @@
 <script lang="ts">
-	import './CurrencyChangeDropdown.scss'
+	import './CurrencyChangeDropdown.scss';
 	import type { Writable } from 'svelte/store';
 	import type { Currency } from '../../../type/Currency';
 	import { fly } from 'svelte/transition';
@@ -55,7 +55,7 @@
 </button>
 
 {#if isOpen}
-	<div
+	<button
 		class="dropdown"
 		transition:fly={{ y: 0, duration: 300 }}
 		on:click|stopPropagation={handleModalClick}
@@ -63,19 +63,17 @@
 	>
 		<ul class="dropdown__content">
 			{#each $currencies as { cc }}
-				<li
+				<button
+					class="currency__item currency__item_pos_size"
 					on:click={(e) => {
 						onCurrencyChange(cc);
 						toggleDropdown(e);
 					}}
 				>
-					<div class="currency__item currency__item_pos_size">
-						<Flag currency={cc} />
-						<span>{cc}</span>
-					</div>
-				</li>
+					<div class="flag_size"><Flag currency={cc} /></div>
+					<h>{cc}</h>
+				</button>
 			{/each}
 		</ul>
-	</div>
+	</button>
 {/if}
-
