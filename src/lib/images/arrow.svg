@@ -1,0 +1,9 @@
+<svg class="calculator__inputs_wrapper__right_section__button__arrow svelte-10579r2" width="31" height="32"
+    viewBox="0 0 31 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M17.5387 0.05664L17.5387 31.9434L21.9047 31.943L21.9047 10.6579L27.8507 16.673L30.9443 13.543L17.6197 0.06368L17.577 0.10656L17.5387 0.05664Z"
+        fill="#abeea5"></path>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M13.4609 31.9434L13.4609 0.0566406L9.09531 0.0569604L9.09531 21.3421L3.14933 15.327L0.0553367 18.457L13.38 31.9363L13.4227 31.8934L13.4609 31.9434Z"
+        fill="#073318"></path>
+</svg>

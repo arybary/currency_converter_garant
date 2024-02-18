@@ -20,9 +20,10 @@ body {
     flex-direction: column;
     padding: 1rem;
     width: 100%;
-    max-width: 64rem;
+  
     margin-top: 3rem;
-    box-sizing: border-box;
+    align-items:center;
+    
   }
 
   &__footer {
@@ -32,7 +33,8 @@ body {
     align-items: center;
     padding: 12px;
     font-size: 1rem;
-    @include mobile {
+
+    @include tablet{
       padding: 12px 0;
       font-size: 1.5rem;
     }
