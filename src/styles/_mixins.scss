@@ -12,9 +12,3 @@ $desktop-size: 1080px;
 		@content;
 	}
 }
-
-@mixin hover {
-	@media (hover: hover) and (pointer: fine) {
-		@content;
-	}
-}
