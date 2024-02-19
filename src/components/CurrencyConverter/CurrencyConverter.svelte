@@ -10,52 +10,34 @@
 		toAmount,
 		rateCurrencyConverter,
 		setCurrenciesForConverter,
-		getRateCurrency
+		getRateCurrency,
+		typeConvert
 	} from '../../store/currencyConverterStore';
 	import { onMount } from 'svelte';
 	import CurrencyChangeDropdown from './CurrencyChangeDropdown/CurrencyChangeDropdown.svelte';
 	import CurrencyReverseBtn from './CurrencyBtnReverse/CurrencyBtnReverse.svelte';
 
-	const convertCurrency = (amount: number, rate: number) => parseFloat((amount * rate).toFixed(2));
+	const convertCurrency = (amount: number, rate: number) => Number((amount * rate).toFixed(2));
 
 	onMount(() => {
 		setCurrenciesForConverter($currencies);
 		getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency);
-		convertFromTo();
+		convert($typeConvert);
 	});
 
-	$: getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency);
+	$: {
+		getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency), convert($typeConvert);
+	}
 
-	const convertFromTo = () => {
-		const convertedAmount = convertCurrency($rateCurrencyConverter, $fromAmount);
-		toAmount.set(convertedAmount);
-	};
-	const convertToFrom = () => {
-		const newRate = 1 / $rateCurrencyConverter;
-		const convertedAmount = convertCurrency(newRate, $toAmount);
-		fromAmount.set(convertedAmount);
-	};
+	const convert = (convertType: 'to' | 'from') =>
+		convertType !== 'to'
+			? toAmount.set(convertCurrency($rateCurrencyConverter, $fromAmount))
+			: fromAmount.set(convertCurrency(1 / $rateCurrencyConverter, $toAmount));
 
 	const convertReverse = () => {
-		const convertedAmount = convertCurrency(1 / $rateCurrencyConverter, $fromAmount);
+		const newRate = 1 / $rateCurrencyConverter;
+		const convertedAmount = convertCurrency(newRate, $fromAmount);
 		toAmount.set(convertedAmount);
-	};
-
-	const handleFromCurrencyChange = (currency: string) => {
-		fromCurrency.set(currency);
-		convertToFrom();
-	};
-	const handleToCurrencyChange = (currency: string) => {
-		toCurrency.set(currency);
-		convertFromTo();
-	};
-	const handleFromAmountChange = (event: Event) => {
-		fromAmount.set(parseFloat((event.target as HTMLInputElement).value));
-		convertFromTo();
-	};
-	const handleToAmountChange = (event: Event) => {
-		toAmount.set(parseFloat((event.target as HTMLInputElement).value));
-		convertToFrom();
 	};
 
 	const handleReverseCurrency = () => {
@@ -70,19 +52,21 @@
 <div class="converter">
 	<div class="converter__input converter__input_reverse">
 		<CurrencyChangeDropdown
-			bind:selectedCurrency={$fromCurrency}
-			onCurrencyChange={handleFromCurrencyChange}
+			typeConvertForCurrency={'to'}
+			selectedCurrency={fromCurrency}
+			onConvert={convert}
 			{currencies}
 		/>
-		<AmountInput name={'from'} bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
+		<AmountInput typeConvertForAmount={'from'} amount={fromAmount} onConvert={convert} />
 	</div>
 	<CurrencyReverseBtn onReverseCurrency={handleReverseCurrency} />
 	<div class="converter__input">
 		<CurrencyChangeDropdown
-			bind:selectedCurrency={$toCurrency}
-			onCurrencyChange={handleToCurrencyChange}
+			typeConvertForCurrency={'from'}
+			selectedCurrency={toCurrency}
+			onConvert={convert}
 			{currencies}
 		/>
-		<AmountInput name={'to'} bind:amount={$toAmount} onAmountChange={handleToAmountChange} />
+		<AmountInput typeConvertForAmount={'to'} amount={toAmount} onConvert={convert} />
 	</div>
 </div>

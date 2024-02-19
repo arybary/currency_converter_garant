@@ -9,6 +9,7 @@ export const toCurrency = writable<string>('UAH');
 export const fromAmount = writable<number>(1);
 export const toAmount = writable<number>(1);
 export const rateCurrencyConverter = writable<number>(1);
+export const typeConvert = writable<'to' | 'from'>('from');
 
 export const setCurrencies = (apiCurrencies: Currency[]) => {
 	const currenciesPlusUAH = [currencyUAH, ...apiCurrencies];
@@ -35,5 +36,5 @@ export const getRateCurrency = (
 	const fromRate = currencies[fromCurrency]?.rate || 1;
 	const toRate = currencies[toCurrency]?.rate || 1;
 	const newRateForConvert = fromRate / toRate;
-	rateCurrencyConverter.update(() => newRateForConvert);
+	rateCurrencyConverter.set(newRateForConvert);
 };

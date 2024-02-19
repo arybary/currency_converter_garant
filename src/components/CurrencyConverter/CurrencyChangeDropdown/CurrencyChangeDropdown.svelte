@@ -5,10 +5,12 @@
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import Flag from '../Flag/Flag.svelte';
+	import { typeConvert } from '../../../store/currencyConverterStore';
 
 	export let currencies: Writable<Currency[]>;
-	export let selectedCurrency: string;
-	export let onCurrencyChange: (currency: string) => void;
+	export let typeConvertForCurrency: 'to' | 'from';
+	export let selectedCurrency: Writable<string>;
+	export let onConvert: (convertType: 'to' | 'from') => void;
 
 	let isOpen = false;
 	let dropdownElement: HTMLElement;
@@ -50,14 +52,14 @@
 </script>
 
 <button class="currency__item" on:click={toggleDropdown}>
-	<div class="currency__item__flag"><Flag currency={selectedCurrency} /></div>
-	<h class="currency__item__currency-name">{selectedCurrency}</h>
+	<div class="currency__item__flag"><Flag currency={$selectedCurrency} /></div>
+	<h class="currency__item__currency-name">{$selectedCurrency}</h>
 </button>
 
 {#if isOpen}
 	<button
 		class="dropdown"
-		transition:fly={{ y:100, duration: 300 }}
+		transition:fly={{ y: 100, duration: 300 }}
 		on:click|stopPropagation={handleModalClick}
 		bind:this={dropdownElement}
 	>
@@ -66,7 +68,9 @@
 				<button
 					class="currency__item"
 					on:click={(e) => {
-						onCurrencyChange(cc);
+						typeConvert.set(typeConvertForCurrency);
+						selectedCurrency.set(cc);
+						onConvert(typeConvertForCurrency);
 						toggleDropdown(e);
 					}}
 					><div class="currency__item currency__item_pos_size">
