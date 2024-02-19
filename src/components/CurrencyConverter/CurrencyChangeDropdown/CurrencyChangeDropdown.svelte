@@ -57,7 +57,7 @@
 {#if isOpen}
 	<button
 		class="dropdown"
-		transition:fly={{ y: 500, duration: 300 }}
+		transition:fly={{ y:100, duration: 300 }}
 		on:click|stopPropagation={handleModalClick}
 		bind:this={dropdownElement}
 	>
