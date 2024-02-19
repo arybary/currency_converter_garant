@@ -15,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import CurrencyChangeDropdown from './CurrencyChangeDropdown/CurrencyChangeDropdown.svelte';
 	import CurrencyReverseBtn from './CurrencyBtnReverse/CurrencyBtnReverse.svelte';
+	import CurrencySlider from './CurrencySlider/CurrencySlider.svelte';
 
 	const convertCurrency = (amount: number, rate: number) => parseFloat((amount * rate).toFixed(2));
 
@@ -67,22 +68,29 @@
 	};
 </script>
 
-<div class="converter">
-	<div class="converter__input converter__input_reverse">
-		<CurrencyChangeDropdown
-			bind:selectedCurrency={$fromCurrency}
-			onCurrencyChange={handleFromCurrencyChange}
-			{currencies}
-		/>
-		<AmountInput name={'from'} bind:amount={$fromAmount} onAmountChange={handleFromAmountChange} />
+<div>
+	<div class="converter">
+		<div class="converter__input converter__input_reverse">
+			<CurrencyChangeDropdown
+				bind:selectedCurrency={$fromCurrency}
+				onCurrencyChange={handleFromCurrencyChange}
+				{currencies}
+			/>
+			<AmountInput
+				name={'from'}
+				bind:amount={$fromAmount}
+				onAmountChange={handleFromAmountChange}
+			/>
+		</div>
+		<CurrencyReverseBtn onReverseCurrency={handleReverseCurrency} />
+		<div class="converter__input">
+			<CurrencyChangeDropdown
+				bind:selectedCurrency={$toCurrency}
+				onCurrencyChange={handleToCurrencyChange}
+				{currencies}
+			/>
+			<AmountInput name={'to'} bind:amount={$toAmount} onAmountChange={handleToAmountChange} />
+		</div>
 	</div>
-	<CurrencyReverseBtn onReverseCurrency={handleReverseCurrency} />
-	<div class="converter__input">
-		<CurrencyChangeDropdown
-			bind:selectedCurrency={$toCurrency}
-			onCurrencyChange={handleToCurrencyChange}
-			{currencies}
-		/>
-		<AmountInput name={'to'} bind:amount={$toAmount} onAmountChange={handleToAmountChange} />
-	</div>
+	<CurrencySlider />
 </div>

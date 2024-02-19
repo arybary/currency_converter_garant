@@ -1,6 +1,7 @@
 <script>
 	import CurrencyConverter from '../components/CurrencyConverter/CurrencyConverter.svelte';
-	import { currencies, setCurrencies } from '../store/currencyConverterStore';
+	import CurrencySlider from '../components/CurrencyConverter/CurrencySlider/CurrencySlider.svelte';
+	import { setCurrencies } from '../store/currencyConverterStore';
 
 	export let data;
 
@@ -14,3 +15,4 @@
 </svelte:head>
 
 <CurrencyConverter />
+
