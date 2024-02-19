@@ -68,7 +68,7 @@
 	};
 </script>
 
-<div>
+
 	<div class="converter">
 		<div class="converter__input converter__input_reverse">
 			<CurrencyChangeDropdown
@@ -93,4 +93,4 @@
 		</div>
 	</div>
 	<CurrencySlider />
-</div>
+
