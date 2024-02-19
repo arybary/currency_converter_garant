@@ -6,7 +6,8 @@
 	export let onAmountChange: (event: Event) => void;
 </script>
 
-
+<div class="amount">
+	<h class="amount__title">amount {name} convert:</h>
 	<input
 		class="amount__input"
 		type="number"
@@ -16,4 +17,4 @@
 		title={name}
 		placeholder={name}
 	/>
-
+</div>

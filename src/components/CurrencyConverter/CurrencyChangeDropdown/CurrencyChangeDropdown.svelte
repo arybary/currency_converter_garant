@@ -50,8 +50,8 @@
 </script>
 
 <button class="currency__item" on:click={toggleDropdown}>
-	<Flag currency={selectedCurrency} />
-	<h>{selectedCurrency}</h>
+	<div class="currency__item__flag"><Flag currency={selectedCurrency} /></div>
+	<h class="currency__item__currency-name">{selectedCurrency}</h>
 </button>
 
 {#if isOpen}
@@ -62,16 +62,17 @@
 		bind:this={dropdownElement}
 	>
 		<ul class="dropdown__content">
-			{#each $currencies as { cc }}
+			{#each $currencies as { cc, txt }}
 				<button
-					class="currency__item currency__item_pos_size"
+					class="currency__item"
 					on:click={(e) => {
 						onCurrencyChange(cc);
 						toggleDropdown(e);
 					}}
-				>
-					<div class="flag_size"><Flag currency={cc} /></div>
-					<h>{cc}</h>
+					><div class="currency__item currency__item_pos_size">
+						<div class="flag_size"><Flag currency={cc} /></div>
+						<h>{cc}</h>
+					</div>
 				</button>
 			{/each}
 		</ul>
