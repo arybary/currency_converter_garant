@@ -49,6 +49,13 @@
 			document.removeEventListener('keydown', escFunction);
 		};
 	});
+
+	const onCurrencyChange = (event: Event, currency: string) => {
+		typeConvert.set(typeConvertForCurrency);
+		selectedCurrency.set(currency);
+		onConvert(typeConvertForCurrency);
+		toggleDropdown(event);
+	};
 </script>
 
 <button class="currency__item" on:click={toggleDropdown}>
@@ -68,10 +75,7 @@
 				<button
 					class="currency__item"
 					on:click={(e) => {
-						typeConvert.set(typeConvertForCurrency);
-						selectedCurrency.set(cc);
-						onConvert(typeConvertForCurrency);
-						toggleDropdown(e);
+						onCurrencyChange(e, cc);
 					}}
 					><div class="currency__item currency__item_pos_size">
 						<div class="flag_size"><Flag currency={cc} /></div>

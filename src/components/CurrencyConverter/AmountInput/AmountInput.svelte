@@ -19,7 +19,7 @@
 		type="number"
 		min="1"
 		bind:value={$amount}
-		on:input={(e) => onAmountChange(e)}
+		on:input={onAmountChange}
 		title={typeConvertForAmount}
 	/>
 </div>
