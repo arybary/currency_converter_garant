@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import type { Currency } from '../type/Currency';
 import { currencyUAH } from '../constants/currenciesConst';
 
@@ -16,8 +16,8 @@ export const setCurrencies = (apiCurrencies: Currency[]) => {
 	currencies.set(currenciesPlusUAH);
 };
 
-export const setCurrenciesForConverter = (apiCurrencies: Currency[]) => {
-	const hashMap = apiCurrencies.reduce(
+export const setCurrenciesForConverter = derived([currencies], ([$currencies]) => {
+	const hashMap = $currencies.reduce(
 		(acc, curr) => {
 			acc[curr.cc] = curr;
 			return acc;
@@ -26,15 +26,30 @@ export const setCurrenciesForConverter = (apiCurrencies: Currency[]) => {
 	);
 
 	currenciesForConverter.set(hashMap);
-};
+});
 
-export const getRateCurrency = (
-	currencies: Record<string, Currency>,
-	fromCurrency: string,
-	toCurrency: string
-) => {
-	const fromRate = currencies[fromCurrency]?.rate || 1;
-	const toRate = currencies[toCurrency]?.rate || 1;
-	const newRateForConvert = fromRate / toRate;
-	rateCurrencyConverter.set(newRateForConvert);
-};
+export const getRateCurrency = derived(
+	[rateCurrencyConverter, currenciesForConverter, fromCurrency, toCurrency],
+	([$rateCurrencyConverter, $currenciesForConverter, $fromCurrency, $toCurrency]) => {
+		console.log('ff');
+		const fromRate = $currenciesForConverter[$fromCurrency]?.rate || 1;
+		const toRate = $currenciesForConverter[$toCurrency]?.rate || 1;
+		const newRateForConvert = fromRate / toRate;
+		console.log(newRateForConvert);
+		return rateCurrencyConverter.set(newRateForConvert);
+	}
+);
+
+export const convertCurrency = (amount: number, rate: number) => Number((amount * rate).toFixed(2));
+
+export const convert = derived(
+	[rateCurrencyConverter, typeConvert, fromAmount, toAmount],
+	([$rateCurrencyConverter, $typeConvert, $fromAmount, $toAmount]) => {
+		const reverseRate = 1 / $rateCurrencyConverter;
+		if ($typeConvert !== 'to') {
+			toAmount.set(convertCurrency($fromAmount, $rateCurrencyConverter));
+		} else {
+			fromAmount.set(convertCurrency($toAmount, reverseRate));
+		}
+	}
+);

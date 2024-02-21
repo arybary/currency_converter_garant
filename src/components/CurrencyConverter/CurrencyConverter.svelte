@@ -1,5 +1,4 @@
 <script lang="ts">
-	import './CurrencyConverter.scss';
 	import AmountInput from './AmountInput/AmountInput.svelte';
 	import {
 		currencies,
@@ -10,43 +9,18 @@
 		toAmount,
 		rateCurrencyConverter,
 		setCurrenciesForConverter,
-		getRateCurrency,
-		typeConvert
+		typeConvert,
+		convert,
+		getRateCurrency
 	} from '../../store/currencyConverterStore';
 	import { onMount } from 'svelte';
 	import CurrencyChangeDropdown from './CurrencyChangeDropdown/CurrencyChangeDropdown.svelte';
 	import CurrencyReverseBtn from './CurrencyBtnReverse/CurrencyBtnReverse.svelte';
 
-	const convertCurrency = (amount: number, rate: number) => Number((amount * rate).toFixed(2));
-
 	onMount(() => {
-		setCurrenciesForConverter($currencies);
-		getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency);
-		convert($typeConvert);
+		const unsubscribe = setCurrenciesForConverter.subscribe(() => {});
+		return unsubscribe;
 	});
-
-	$: {
-		getRateCurrency($currenciesForConverter, $fromCurrency, $toCurrency), convert($typeConvert);
-	}
-
-	const convert = (convertType: 'to' | 'from') =>
-		convertType !== 'to'
-			? toAmount.set(convertCurrency($rateCurrencyConverter, $fromAmount))
-			: fromAmount.set(convertCurrency(1 / $rateCurrencyConverter, $toAmount));
-
-	const convertReverse = () => {
-		const newRate = 1 / $rateCurrencyConverter;
-		const convertedAmount = convertCurrency(newRate, $fromAmount);
-		toAmount.set(convertedAmount);
-	};
-
-	const handleReverseCurrency = () => {
-		const tempToCurrency = $toCurrency;
-		const tempFromCurrency = $fromCurrency;
-		toCurrency.set(tempFromCurrency);
-		fromCurrency.set(tempToCurrency);
-		convertReverse();
-	};
 </script>
 
 <div class="converter">
@@ -54,19 +28,55 @@
 		<CurrencyChangeDropdown
 			typeConvertForCurrency={'to'}
 			selectedCurrency={fromCurrency}
-			onConvert={convert}
 			{currencies}
 		/>
-		<AmountInput typeConvertForAmount={'from'} amount={fromAmount} onConvert={convert} />
+		<AmountInput typeConvertForAmount={'from'} amount={fromAmount} />
 	</div>
-	<CurrencyReverseBtn onReverseCurrency={handleReverseCurrency} />
+	<CurrencyReverseBtn />
 	<div class="converter__input">
 		<CurrencyChangeDropdown
 			typeConvertForCurrency={'from'}
 			selectedCurrency={toCurrency}
-			onConvert={convert}
 			{currencies}
 		/>
-		<AmountInput typeConvertForAmount={'to'} amount={toAmount} onConvert={convert} />
+		<AmountInput typeConvertForAmount={'to'} amount={toAmount} />
 	</div>
 </div>
+
+<style lang="scss">
+	@use '/src/styles/variables' as *;
+	@use '/src/styles/mixins' as *;
+	.converter {
+		display: flex;
+		flex-direction: column;
+		background-color: $color-primary-green;
+		width: 100%;
+		padding: 2rem;
+		gap: 1rem;
+		align-items: center;
+		justify-content: center;
+		border-radius: 1rem;
+		border-bottom: 0.2rem solid $color-primary-dark-green;
+		-webkit-border-radius: 1rem;
+		-moz-border-radius: 1rem;
+		-ms-border-radius: 1rem;
+		-o-border-radius: 1rem;
+
+		&__input {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5rem;
+
+			&_reverse {
+				@include desktop {
+					flex-direction: row-reverse;
+				}
+			}
+		}
+
+		@include desktop {
+			flex-direction: row;
+		}
+	}
+</style>

@@ -22,7 +22,7 @@
 </div>
 
 <style lang="scss">
-	@use "/src/styles/variables" as *;
+	@use '/src/styles/variables' as *;
 
 	.contacts {
 		width: 100%;
