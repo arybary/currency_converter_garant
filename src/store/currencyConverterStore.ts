@@ -29,8 +29,8 @@ export const setCurrenciesForConverter = derived([currencies], ([$currencies]) =
 });
 
 export const getRateCurrency = derived(
-	[rateCurrencyConverter, currenciesForConverter, fromCurrency, toCurrency],
-	([$rateCurrencyConverter, $currenciesForConverter, $fromCurrency, $toCurrency]) => {
+	[currenciesForConverter, fromCurrency, toCurrency],
+	([$currenciesForConverter, $fromCurrency, $toCurrency]) => {
 		const fromRate = $currenciesForConverter[$fromCurrency]?.rate || 1;
 		const toRate = $currenciesForConverter[$toCurrency]?.rate || 1;
 		const newRateForConvert = fromRate / toRate;
