@@ -1,5 +1,7 @@
 <script lang="ts">
 	import AmountInput from './AmountInput/AmountInput.svelte';
+	import CurrencyChangeDropdown from './CurrencyChangeDropdown/CurrencyChangeDropdown.svelte';
+	import CurrencyReverseBtn from './CurrencyBtnReverse/CurrencyBtnReverse.svelte';
 	import {
 		fromCurrency,
 		toCurrency,
@@ -10,8 +12,6 @@
 		getRateCurrency
 	} from '../../store/currencyConverterStore';
 	import { onMount } from 'svelte';
-	import CurrencyChangeDropdown from './CurrencyChangeDropdown/CurrencyChangeDropdown.svelte';
-	import CurrencyReverseBtn from './CurrencyBtnReverse/CurrencyBtnReverse.svelte';
 
 	onMount(() => {
 		const unsubscribeCurrencies = setCurrenciesForConverter.subscribe(() => {});
