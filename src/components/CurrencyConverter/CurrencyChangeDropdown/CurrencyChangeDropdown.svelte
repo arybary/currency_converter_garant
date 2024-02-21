@@ -110,23 +110,24 @@
 
 	.currency__item {
 		display: flex;
-		justify-content: space-between;
+		
 		flex-direction: column;
 		align-items: center;
 		cursor: pointer;
 		width: 6rem;
-		height: 6rem;
+		max-height: 6rem;
 		background-color: $color-primary-dark-green;
 		color: $color-neutral-colors-white;
 		border-radius: 0.5rem;
-		border-bottom: 0.2rem solid $color-neutral-colors-white;
+		border-bottom: 0.2rem solid $color-primary-light-green;
+		
 		transition: width 0.3s;
 		&__flag {
 			width: 100%;
 		}
 
 		&__currency-name {
-			font-family: $secondary-font;
+			font-family: $secondary-font;padding-bottom: 1rem;
 			font-size: 1.2rem;
 			font-weight: 600;
 		}
@@ -142,7 +143,7 @@
 	}
 
 	.flag_size {
-		width: 3rem;
-		height: 2rem;
+		width: 6rem;
+		height: 4rem;
 	}
 </style>

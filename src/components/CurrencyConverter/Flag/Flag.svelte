@@ -6,5 +6,15 @@
 </script>
 
 {#if hasFlag(currencyForFlag)}
-	<img alt="Flag Country" src={`${flagUrl}/${currencyForFlag}.svg`} />
+	<img class="flag" alt="Flag Country" src={`${flagUrl}/${currencyForFlag}.svg`} />
 {/if}
+
+<style lang="scss">
+	.flag {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		border-radius: 1rem;
+		padding: 0.4rem;
+	}
+</style>
