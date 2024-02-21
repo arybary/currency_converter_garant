@@ -4,7 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import Flag from '../Flag/Flag.svelte';
-	import { currencies, getRateCurrency, typeConvert } from '../../../store/currencyConverterStore';
+	import { currencies, typeConvert } from '../../../store/currencyConverterStore';
 
 	export let typeConvertForCurrency: 'to' | 'from';
 	export let selectedCurrency: Writable<string>;
@@ -43,11 +43,10 @@
 		const handler = (event: any) => handleClickOutside(event);
 		document.addEventListener('keydown', escFunction);
 		document.addEventListener('click', handler);
-		
+
 		return () => {
 			document.removeEventListener('click', handler);
 			document.removeEventListener('keydown', escFunction);
-			
 		};
 	});
 

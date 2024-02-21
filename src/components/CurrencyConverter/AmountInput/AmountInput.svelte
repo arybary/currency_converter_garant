@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Writable } from 'svelte/store';
-	import { convert, typeConvert } from '../../../store/currencyConverterStore';
-	import { onMount } from 'svelte';
+	import { typeConvert } from '../../../store/currencyConverterStore';
 
 	export let amount: Writable<number>;
 	export let typeConvertForAmount: 'to' | 'from';
