@@ -1,16 +1,15 @@
 <script lang="ts">
 	import type { Writable } from 'svelte/store';
-	import type { Currency } from '../../../type/Currency';
+
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import Flag from '../Flag/Flag.svelte';
-	import { getRateCurrency, typeConvert } from '../../../store/currencyConverterStore';
+	import { currencies, getRateCurrency, typeConvert } from '../../../store/currencyConverterStore';
 
-	export let currencies: Writable<Currency[]>;
 	export let typeConvertForCurrency: 'to' | 'from';
 	export let selectedCurrency: Writable<string>;
 
-	const flyForX = typeConvertForCurrency == 'from' ? -300 : 300;
+	const flyForX = typeConvertForCurrency == 'from' ? -100 : 100;
 
 	let isOpen = false;
 	let dropdownElement: HTMLElement;
@@ -44,11 +43,11 @@
 		const handler = (event: any) => handleClickOutside(event);
 		document.addEventListener('keydown', escFunction);
 		document.addEventListener('click', handler);
-		const unsubscribe = getRateCurrency.subscribe(() => {});
+		
 		return () => {
 			document.removeEventListener('click', handler);
 			document.removeEventListener('keydown', escFunction);
-			unsubscribe;
+			
 		};
 	});
 
@@ -68,7 +67,7 @@
 {#if isOpen}
 	<button
 		class="dropdown"
-		transition:fly={{ y: -100, x: flyForX, duration: 300 }}
+		transition:fly={{ y: -50, x: flyForX, duration: 300 }}
 		on:click|stopPropagation={handleModalClick}
 		bind:this={dropdownElement}
 	>

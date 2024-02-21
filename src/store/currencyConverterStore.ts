@@ -8,7 +8,7 @@ export const fromCurrency = writable<string>('USD');
 export const toCurrency = writable<string>('UAH');
 export const fromAmount = writable<number>(1);
 export const toAmount = writable<number>(1);
-export const rateCurrencyConverter = writable<number>(1);
+
 export const typeConvert = writable<'to' | 'from'>('from');
 
 export const setCurrencies = (apiCurrencies: Currency[]) => {
@@ -34,21 +34,20 @@ export const getRateCurrency = derived(
 		const fromRate = $currenciesForConverter[$fromCurrency]?.rate || 1;
 		const toRate = $currenciesForConverter[$toCurrency]?.rate || 1;
 		const newRateForConvert = fromRate / toRate;
-		console.log(newRateForConvert);
-		return rateCurrencyConverter.set(newRateForConvert);
+		console.log('rate:', newRateForConvert);
+		return newRateForConvert;
 	}
 );
 
 export const convertCurrency = (amount: number, rate: number) => Number((amount * rate).toFixed(2));
 
 export const convert = derived(
-	[rateCurrencyConverter, typeConvert, fromAmount, toAmount],
-	([$rateCurrencyConverter, $typeConvert, $fromAmount, $toAmount]) => {
-		const reverseRate = 1 / $rateCurrencyConverter;
-		if ($typeConvert !== 'to') {
-			toAmount.set(convertCurrency($fromAmount, $rateCurrencyConverter));
-		} else {
-			fromAmount.set(convertCurrency($toAmount, reverseRate));
-		}
+	[getRateCurrency, typeConvert, fromAmount, toAmount],
+	([$getRateCurrency, $typeConvert, $fromAmount, $toAmount]) => {
+		console.log('convert');
+		const reverseRate = 1 / $getRateCurrency;
+		return $typeConvert !== 'to'
+			? toAmount.set(convertCurrency($fromAmount, $getRateCurrency))
+			: fromAmount.set(convertCurrency($toAmount, reverseRate));
 	}
 );

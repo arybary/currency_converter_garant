@@ -1,15 +1,11 @@
 <script lang="ts">
 	import AmountInput from './AmountInput/AmountInput.svelte';
 	import {
-		currencies,
-		currenciesForConverter,
 		fromCurrency,
 		toCurrency,
 		fromAmount,
 		toAmount,
-		rateCurrencyConverter,
 		setCurrenciesForConverter,
-		typeConvert,
 		convert,
 		getRateCurrency
 	} from '../../store/currencyConverterStore';
@@ -18,27 +14,21 @@
 	import CurrencyReverseBtn from './CurrencyBtnReverse/CurrencyBtnReverse.svelte';
 
 	onMount(() => {
-		const unsubscribe = setCurrenciesForConverter.subscribe(() => {});
-		return unsubscribe;
+		const unsubscribeCurrencies = setCurrenciesForConverter.subscribe(() => {});
+		const unsubscribeRate = getRateCurrency.subscribe(() => {});
+		const unsubscribeConvert = convert.subscribe(() => {});
+		return { unsubscribeCurrencies, unsubscribeRate, unsubscribeConvert };
 	});
 </script>
 
 <div class="converter">
 	<div class="converter__input converter__input_reverse">
-		<CurrencyChangeDropdown
-			typeConvertForCurrency={'to'}
-			selectedCurrency={fromCurrency}
-			{currencies}
-		/>
+		<CurrencyChangeDropdown typeConvertForCurrency={'to'} selectedCurrency={fromCurrency} />
 		<AmountInput typeConvertForAmount={'from'} amount={fromAmount} />
 	</div>
 	<CurrencyReverseBtn />
 	<div class="converter__input">
-		<CurrencyChangeDropdown
-			typeConvertForCurrency={'from'}
-			selectedCurrency={toCurrency}
-			{currencies}
-		/>
+		<CurrencyChangeDropdown typeConvertForCurrency={'from'} selectedCurrency={toCurrency} />
 		<AmountInput typeConvertForAmount={'to'} amount={toAmount} />
 	</div>
 </div>

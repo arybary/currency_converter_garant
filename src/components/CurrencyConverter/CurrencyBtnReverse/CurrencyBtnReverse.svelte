@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {
-		rateCurrencyConverter,
+		getRateCurrency,
 		toCurrency,
 		fromCurrency,
 		typeConvert
@@ -8,11 +8,13 @@
 	import arrow from '$lib/images/arrow.svg';
 
 	const handleReverseCurrency = () => {
+		const amountInput = 'from';
 		const tempToCurrency = $toCurrency;
 		const tempFromCurrency = $fromCurrency;
 
 		fromCurrency.set(tempToCurrency);
 		toCurrency.set(tempFromCurrency);
+		typeConvert.set(amountInput);
 	};
 </script>
 
@@ -20,7 +22,7 @@
 	<div class="btn__icon">
 		<img class="btn__icon__img" src={arrow} alt="arrow" />
 	</div>
-	<h>{$rateCurrencyConverter.toFixed(2)}</h></button
+	<h>{$getRateCurrency.toFixed(2)}</h></button
 >
 
 <style lang="scss">

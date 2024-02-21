@@ -6,14 +6,13 @@
 	export let amount: Writable<number>;
 	export let typeConvertForAmount: 'to' | 'from';
 
-	onMount(() => {
-		const unsubscribe = convert.subscribe(() => {});
-		return unsubscribe;
-	});
-
 	const onAmountChange = (event: Event) => {
-		typeConvert.set(typeConvertForAmount);
-		amount.set(Number((event.target as HTMLInputElement).value));
+		if (typeConvertForAmount === $typeConvert) {
+			amount.set(Number((event.target as HTMLInputElement).value));
+		} else {
+			typeConvert.set(typeConvertForAmount);
+			amount.set(Number((event.target as HTMLInputElement).value));
+		}
 	};
 </script>
 
@@ -23,7 +22,7 @@
 		class="amount__input"
 		type="number"
 		min="1"
-		bind:value={$amount}
+		value={$amount}
 		on:input={onAmountChange}
 		title={typeConvertForAmount}
 	/>
